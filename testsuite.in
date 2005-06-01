@@ -1,0 +1,4 @@
+dnl $Id: testsuite.in,v 1.1 2005-06-01 22:07:58 hww3 Exp $
+
+  test_true(objectp(Public.Web.RSS))
+
