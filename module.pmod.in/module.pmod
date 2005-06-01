@@ -1,6 +1,9 @@
 constant __author = "Bill Welliver <hww3@riverweb.com>";
 constant __version = "1.0";
 
+//! This is a parser for RSS files. Versions 0.92, 1.0 and 2.0 are 
+//! supported.
+
 import Public.Parser.XML2;
 
 constant V10_NS = "http://purl.org/rss/1.0/";
@@ -45,6 +48,7 @@ Channel parse(string xml)
 
 }
 
+//!
 class Thing
 {
   constant V10_NS = "http://purl.org/rss/1.0/";
@@ -57,6 +61,7 @@ class Thing
   static multiset element_required_elements = (<>);
   static multiset element_subelements = (<>);
 
+//!
   mapping data=([]);
 
   final string _sprintf(int m)
@@ -116,6 +121,7 @@ class Thing
 
 }
 
+//!
 class Item
 {
   inherit Thing;
@@ -190,6 +196,7 @@ class Item
   }
 }
 
+//!
 class Channel
 {
   inherit Thing;
@@ -201,6 +208,7 @@ class Channel
   multiset element_required_elements = (<"title", "link", "description">);
   multiset element_subelements = (<"image", "cloud", "category">);
 
+//!
   array(Item) items = ({});
 
   void create(Node xml, string _version)

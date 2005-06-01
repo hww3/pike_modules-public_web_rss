@@ -1,8 +1,7 @@
-# $Id: configure.in,v 1.1 2005-06-01 22:07:58 hww3 Exp $
+# $Id: configure.in,v 1.2 2005-06-01 22:16:11 hww3 Exp $
 AC_INIT(module.pmod.in)
-
 AC_MODULE_INIT()
-
+AC_CONFIG_HEADERS(config.h)
 AC_OUTPUT(Makefile)
 
 
