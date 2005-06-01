@@ -1,0 +1,16 @@
+This module provides a simple RSS 0.92, 1.0 and 2.0 parser. It currently 
+parses RSS but does not allow for creation and subsequent generation of 
+RSS (yet).
+
+BUILDING
+
+To build this module, perform the following steps:
+
+0. Install the libxml2 library (http://xmlsoft.org). 
+1. Install the Public.Parser.XML2 module
+    pike -x monger --install Public.Parser.XML2
+2. Install this module
+    pike -x module   
+    pike -x module install
+
+Usage examples are found in the examples directory.

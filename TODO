@@ -1,0 +1,7 @@
+Support the built in XML parser shipped with pike (would be much slower)
+
+Support generation of RSS XML data.
+
+Create RSS feeds from scratch.
+
+Atom support?
