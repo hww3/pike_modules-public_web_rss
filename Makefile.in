@@ -1,9 +1,9 @@
-# $Id: Makefile.in,v 1.1 2005-06-01 22:07:58 hww3 Exp $
+# $Id: Makefile.in,v 1.2 2005-06-01 22:28:26 hww3 Exp $
 @make_variables@
 VPATH=@srcdir@:
 OBJS=
 MODDIR=Public.pmod/Web.pmod/
-MODNAME=RSS.pmod
+MODNAME=RSS
 MODULE_PMOD_IN=module.pmod.in
 MODULE_LDFLAGS=@LDFLAGS@ @LIBS@
 

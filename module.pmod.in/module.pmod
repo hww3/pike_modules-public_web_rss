@@ -85,7 +85,8 @@ class Thing
 
     foreach(xml->children(); int index; Node child)
     {
-      if(child->get_node_type() == 1)
+write(sprintf("%O\n", child));
+      if(child && child->get_node_type() == 1)
       {
          string e = child->get_node_name();
          string v;
@@ -245,7 +246,7 @@ class Channel
     foreach(xml->children() || ({}); int index; Node child)
     {
 
-       if(child->get_node_type() == 1 && required_elements[child->get_node_name()])
+       if(child && child->get_node_type() == 1 && required_elements[child->get_node_name()])
          d[child->get_node_name()] = get_element_text(xml);
 
        if(!(d->link && d->name && d->description && d->title))
