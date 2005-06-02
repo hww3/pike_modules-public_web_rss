@@ -64,6 +64,8 @@ class Thing
 //!
   mapping data=([]);
 
+  string version;
+
   final string _sprintf(int m)
   {
     if(data && data->title)
@@ -76,16 +78,25 @@ class Thing
         return xml->get_text();
   }
 
-  static void create(Node xml, string version)
-  {
-    // let's look at each element.
-
+  void set_version(string version)
+  { 
     if(version="1.0") RSS_VER_CORE = V10_NS;
     else RSS_VER_CORE = 0;
 
+    this->version = version;
+  }
+
+  static void create(void|Node xml, void|string version)
+  {
+    // let's look at each element.
+
+    if(version);
+      set_version(version);
+
+    if(xml == UNDEFINED) return;
+
     foreach(xml->children(); int index; Node child)
     {
-write(sprintf("%O\n", child));
       if(child && child->get_node_type() == 1)
       {
          string e = child->get_node_name();
@@ -130,12 +141,14 @@ class Item
   string type = "Item";
   static multiset element_subelements = (<"enclosure", "source", "category", "guid">);
 
-  static void create(Node xml, string version)
+  static void create(void|Node xml, void|string version)
   {
+write("create item\n");
     ::create(xml, version);
-    
-    if(!(data["title"] || data["description"]))
-      error("Incomplete " + type + " definition: title or description must be provided.\n");
+
+    if(xml != UNDEFINED)     
+      if(!(data["title"] || data["description"]))
+        error("Incomplete " + type + " definition: title or description must be provided.\n");
   }
 
   void parse_enclosure(Node xml, string version)
@@ -149,6 +162,39 @@ class Item
   
     data->enclosure += ({ ([ "url": a->url, "length": a->length, "type": a->type ]) });
 
+  }
+
+//!
+  void add_enclosure(string url, string length, string type)
+  {
+    if(!data->enclosure) data->enclosure = ({});
+  
+    data->enclosure += ({ ([ "url": url, "length": length, "type": type ]) });
+
+  }
+
+//!
+  void add_category(string name, string domain)
+  {
+    if(!data->category) data->category = ({});
+    
+    data->category+=({ ([name: domain]) });
+  }
+
+//!
+  void add_source(string name, string url)
+  {
+    if(!data->source) data->source = ({});
+    
+    data->source+=({ ([name: url]) });
+  }
+
+//!
+  void add_guid(string name, int(0..1) permalink)
+  {
+    if(!data->guid) data->guid = ({});
+    
+    data->guid+=({ ([name: permalink]) });
   }
 
   void parse_source(Node xml, string version)
@@ -204,28 +250,35 @@ class Channel
   
   string type = "Channel";
 
-  string version;
-
   multiset element_required_elements = (<"title", "link", "description">);
   multiset element_subelements = (<"image", "cloud", "category">);
 
 //!
   array(Item) items = ({});
 
-  void create(Node xml, string _version)
+  void create(Node|void xml, void|string _version)
   {
-    version = _version;
-
     if(version=="1.0") element_required_elements += (< "items">);
     if(version=="1.0") element_subelements += (< "items", "textinput">);
     else if(version=="2.0") element_subelements += (< "item", "textInput" >);
     else if(version=="0.91") element_subelements += (< "item" >);
 
+
+/*
+    if(xml == UNDEFINED)
+    { 
+      return;
+    }
+*/
     // next, we should look for channels.
     foreach(xml->children(); int index; Node child)
     {
+write(child->get_node_name() + "\n");
       if(child->get_node_name() == "channel")
+      {
         ::create(child, version);
+        create(child, version);
+      }
       if(child->get_node_name() == "item")
       {
         items+=({ Item(child, version) });
@@ -236,6 +289,12 @@ class Channel
   }
 
   function parse_textInput = parse_textinput;
+
+//!
+  void add_item(Item i)
+  {
+    items += ({ i });
+  }
 
   void parse_textinput(Node xml, string version)
   {
@@ -277,7 +336,14 @@ class Channel
     
     data->category+=({ ([e: v]) });
   }
-  
+
+//!
+  void add_category(string category, string description)
+  {
+    if(!data->category) data->category = ({});
+    
+    data->category+=({ ([category: description]) });
+  }
 
   void parse_image(Node xml, string version)
   {
@@ -296,6 +362,15 @@ class Channel
     data->cloud += ({ ([ "domain": a->domain, "port": a->port, "path": a->path, 
                          "registerProcedure": a->registerProcedure ]) });
 
+  }
+
+//!
+  void add_cloud(string domain, string port, string path, string reg)
+  {
+    if(!data->cloud) data->cloud = ({});
+  
+    data->cloud += ({ ([ "domain": domain, "port": port, "path": path, 
+                         "registerProcedure": reg ]) });
   }
 
   void parse_item(Node xml, string version)
