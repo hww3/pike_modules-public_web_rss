@@ -1,0 +1,10 @@
+Changes since version 1.0
+
+- Broke module into individual class files. If you installed v1.0 of this 
+module, you'll need to remove the RSS.pmod file that was installed before 
+you can install subsequent versions.
+
+- Better enforcement of RSS structure.
+
+- Data generated for items is now more easily digested. Indescriminant use 
+of arrays and mappings is minimized.
