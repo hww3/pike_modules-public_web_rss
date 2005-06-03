@@ -139,7 +139,9 @@ class Item
   inherit Thing;
 
   string type = "Item";
-  static multiset element_subelements = (<"enclosure", "source", "category", "guid">);
+  static multiset element_subelements = (<"enclosure", "source", 
+                                           "category", "guid"
+					   "comments", "author", "pubDate">);
 
   static void create(void|Node xml, void|string version)
   {
@@ -158,43 +160,52 @@ write("create item\n");
     if(!(a->url && a->length && a->type))
       error("Error in " + type + " definition: enclosure is malformed.\n");
 
-    if(!data->enclosure) data->enclosure = ({});
-  
-    data->enclosure += ({ ([ "url": a->url, "length": a->length, "type": a->type ]) });
+    data->enclosure = ([ "url": a->url, "length": a->length, "type": a->type ]);
 
   }
 
 //!
-  void add_enclosure(string url, string length, string type)
+  void set_enclosure(string url, string length, string type)
   {
-    if(!data->enclosure) data->enclosure = ({});
-  
-    data->enclosure += ({ ([ "url": url, "length": length, "type": type ]) });
+    data->enclosure = ([ "url": url, "length": length, "type": type ]);
 
   }
 
-//!
+//! we can have more than one category.
   void add_category(string name, string domain)
-  {
+  {    
     if(!data->category) data->category = ({});
-    
-    data->category+=({ ([name: domain]) });
+    data->category = ({ ([name: domain]) });
   }
 
 //!
-  void add_source(string name, string url)
+  void set_source(string name, string url)
   {
-    if(!data->source) data->source = ({});
-    
-    data->source+=({ ([name: url]) });
+    data->source = ([name: url]);
   }
 
 //!
-  void add_guid(string name, int(0..1) permalink)
+  void set_guid(string name, int(0..1) permalink)
   {
-    if(!data->guid) data->guid = ({});
-    
-    data->guid+=({ ([name: permalink]) });
+    data->guid = ([name: permalink]);
+  }
+
+//!
+  void set_author(string author)
+  {
+    data->author = author;
+  }
+
+//!
+  void set_comments(string comments)
+  {
+    data->comments = comments;
+  }
+
+//!
+  void set_pubDate(string pubDate)
+  {
+    data->pubDate = pubDate;
   }
 
   void parse_source(Node xml, string version)
@@ -207,10 +218,8 @@ write("create item\n");
     v = a["url"];
   
     e = get_element_text(xml);
-
-    if(!data->source) data->source = ({});
     
-    data->source+=({ ([e: v]) });
+    data->source = ([e: v]);
   }
   
   void parse_category(Node xml, string version)
@@ -223,8 +232,35 @@ write("create item\n");
     e = get_element_text(xml);
 
     if(!data->category) data->category = ({});
-    
-    data->category+=({ ([e: v]) });
+
+    data->category += ({ ([e: v]) });
+  }
+
+  void parse_comments(Node xml, string version)
+  {
+    string e, v;
+
+    e = get_element_text(xml);
+
+    data->comments = e;
+  }
+
+  void parse_author(Node xml, string version)
+  {
+    string e, v;
+
+    e = get_element_text(xml);
+
+    data->author = e;
+  }
+  
+  void parse_pubDate(Node xml, string version)
+  {
+    string e, v;
+
+    e = get_element_text(xml);
+
+    data->pubDate = e;
   }
   
   void parse_guid(Node xml, string version)
@@ -236,9 +272,7 @@ write("create item\n");
 
     e = get_element_text(xml);
 
-    if(!data->guid) data->guid = ({});
-    
-    data->guid+=({ ([e: v]) });
+    data->guid = ([e: v]);
     
   }
 }
