@@ -10,6 +10,75 @@ import ".";
                                    "title", "link", "author", 
                                    "pubDate", "comments", "description">);
 
+  string render()
+  {
+    string d = "<item>\n";
+
+    foreach(indices(data);;string e)
+    {
+      if(this_object()["render_" + e])
+        d += call_function(this_object()["render_" + e]);
+    }
+
+    d += "</item>\n";
+
+    return d;
+  } 
+
+  string render_guid()
+  {
+    if(data->guid)
+      return "<guid " + (sizeof(data->guid)>1 ? 
+        "isPermaLink=\"" + data->guid[1] + "\"":"") + "/>" + data->guid[0] + 
+        "</guid>";
+  }
+
+  string render_description()
+  {
+    if(data->description)
+      return "<description>" + data->description + "</description>";
+  }
+
+  string render_pubDate()
+  {
+    if(data->pubDate)
+      return "<pubDate>" + data->pubDate + "</pubDate>";
+  }
+
+  string render_comments()
+  {
+    if(data->comments)
+      return "<comments>" + data->comments + "</comments>";
+  }
+
+  string render_category()
+  {
+    string d = "";
+    if(data->category)
+      foreach(data->category;; array c)
+        d += "<category domain=\"" + c[1] + "\">" + c[0] + "</category>";
+    return d;
+  }
+
+
+  string render_title()
+  {
+    if(data->title)
+      return "<title>" + data->title + "</title>";
+  }
+
+  string render_author()
+  {
+    if(data->author)
+      return "<author>" + data->author + "</author>";
+  }
+
+  string render_link()
+  {
+    if(data->link)
+      return "<link>" + data->link + "</link>";
+  }
+
   static void create(void|Node xml, void|string version)
   {
     ::create(xml, version);
@@ -41,7 +110,7 @@ import ".";
   void add_category(string name, string domain)
   {    
     if(!data->category) data->category = ({});
-    data->category = ({ ([name: domain]) });
+    data->category = ({ ({name, domain}) });
   }
 
 //!
@@ -99,7 +168,7 @@ import ".";
 
     if(!data->category) data->category = ({});
 
-    data->category += ({ ([e: v]) });
+    data->category += ({ ({e, v}) });
   }
 
   void parse_guid(Node xml, string version)
