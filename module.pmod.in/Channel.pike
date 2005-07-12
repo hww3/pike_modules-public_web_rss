@@ -11,17 +11,22 @@ import ".";
                                    "image", "cloud", "category", "item",
                                    "lastBuildDate", "lastBuildDate",
 				   "managingEditor", "copyright",
-				   "lastBuildDate", language", "pubDate">);
+				   "lastBuildDate", "language", "pubDate",
+				   "generator", "docs", "ttl", "image",
+				   "rating", "textInput", "skipHours",
+                                   "skipDays">);
 
 //!
   array(Item) items = ({});
 
   void create(Node|void xml, void|string _version)
   {
-    if(version=="1.0") element_required_elements += (< "items">);
-    if(version=="1.0") element_subelements += (< "items", "textinput">);
-    else if(version=="2.0") element_subelements += (< "item", "textInput" >);
-    else if(version=="0.91") element_subelements += (< "item" >);
+    if(_version=="1.0") {
+      element_required_elements += (< "items">);
+      element_subelements += (< "items", "textinput">);
+    }
+    else if(_version=="2.0") element_subelements += (< "item", "textInput" >);
+    else if(_version=="0.91") element_subelements += (< "item" >);
 
 
 /*
