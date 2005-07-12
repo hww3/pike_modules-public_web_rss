@@ -8,7 +8,10 @@ import ".";
 
   multiset element_required_elements = (<"title", "link", "description">);
   multiset element_subelements = (<"title", "link", "description", 
-                                   "image", "cloud", "category", "item">);
+                                   "image", "cloud", "category", "item",
+                                   "lastBuildDate", "lastBuildDate",
+				   "managingEditor", "copyright",
+				   "lastBuildDate", language", "pubDate">);
 
 //!
   array(Item) items = ({});
