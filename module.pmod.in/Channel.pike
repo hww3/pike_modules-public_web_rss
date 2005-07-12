@@ -29,13 +29,6 @@ import ".";
     }
     else if(_version=="0.91") element_subelements += (< "item" >);
 
-
-/*
-    if(xml == UNDEFINED)
-    { 
-      return;
-    }
-*/
     // next, we should look for channels.
     foreach(xml->children(); int index; Node child)
     {
@@ -43,10 +36,6 @@ import ".";
       {
         ::create(child, version);
         create(child, version);
-      }
-      if(child->get_node_name() == "item")
-      {
-        items+=({ Item(child, version) });
       }
 
     }
