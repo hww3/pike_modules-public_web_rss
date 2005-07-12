@@ -10,7 +10,10 @@ object cache;
 
 constant module_type = MODULE_PROVIDER|MODULE_PARSER;
 constant module_name = "Emit: RSS";
-constant module_doc  = "Provides an emit plugin for RSS files";
+constant module_doc  = "Provides an emit plugin for RSS files"
+			"<p>Plugin name: rss<p>Arguments:<p> <b>url</b> - the url to load " 
+"(file:///local/paths.xml or http://domain.com/remote/paths.xml<br>"
+"<b>timeout</b> - number of seconds to cache the file" ;
 
 
 mixed rss_fetch(string rssurl, int timeout)
