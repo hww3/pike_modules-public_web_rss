@@ -1,5 +1,9 @@
 Changes since version 1.0
 
+- Added more channel elements for version 2.0
+
+- Fixed handling of versions of RSS.
+
 - Broke module into individual class files. If you installed v1.0 of this 
 module, you'll need to remove the RSS.pmod file that was installed before 
 you can install subsequent versions.
