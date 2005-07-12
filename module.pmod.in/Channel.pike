@@ -8,13 +8,7 @@ import ".";
 
   multiset element_required_elements = (<"title", "link", "description">);
   multiset element_subelements = (<"title", "link", "description", 
-                                   "image", "cloud", "category", "item",
-                                   "lastBuildDate", "lastBuildDate",
-				   "managingEditor", "copyright",
-				   "lastBuildDate", "language", "pubDate",
-				   "generator", "docs", "ttl", "image",
-				   "rating", "textInput", "skipHours",
-                                   "skipDays">);
+                                   "image", "cloud", "category", "item">);
 
 //!
   array(Item) items = ({});
@@ -25,7 +19,14 @@ import ".";
       element_required_elements += (< "items">);
       element_subelements += (< "items", "textinput">);
     }
-    else if(_version=="2.0") element_subelements += (< "item", "textInput" >);
+    else if(_version=="2.0") {
+      element_subelements += (< "item", "lastBuildDate", "lastBuildDate",
+				   "managingEditor", "copyright",
+				   "lastBuildDate", "language", "pubDate",
+				   "generator", "docs", "ttl", "image",
+				   "rating", "textInput", "skipHours",
+                                   "skipDays" >);
+    }
     else if(_version=="0.91") element_subelements += (< "item" >);
 
 
