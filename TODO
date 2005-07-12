@@ -4,4 +4,6 @@ Support generation of RSS XML data.
 
 Create RSS feeds from scratch.
 
+Parsing of fields such as dates into Calendar objects?
+
 Atom support?
