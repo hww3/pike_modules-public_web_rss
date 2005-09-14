@@ -26,8 +26,8 @@ mixed rss_fetch(string rssurl, int timeout)
 
   else rss = Protocols.HTTP.get_url_data(rssurl);
 
-  if(rss)
-    r = Public.Web.RSS.parse(rss);
+  if(rss && sizeof(rss))
+    catch(r = Public.Web.RSS.parse(rss));
 
   if(r)
     cache->store(cache_pike(rssurl, r, timeout));
@@ -52,17 +52,17 @@ array emit_rss(mapping args, object request_id)
 
   array retval = ({});
   Public.Web.RSS.Item item;
+  if(r)
+    foreach(r->items, item)
+    {
+      mapping d = ([]);
 
-  foreach(r->items, item)
-  {
-    mapping d = ([]);
+      d->rsschannel = r->data->title;
+  
+      d+=copy_value(item->data);
 
-    d->rsschannel = r->data->title;
-
-    d+=copy_value(item->data);
-
-    retval += ({d});
-  }
+      retval += ({d});
+    }
 
   return retval;
 }
