@@ -10,10 +10,7 @@ object cache;
 
 constant module_type = MODULE_PROVIDER|MODULE_PARSER;
 constant module_name = "Emit: RSS";
-constant module_doc  = "Provides an emit plugin for RSS files"
-			"<p>Plugin name: rss<p>Arguments:<p> <b>url</b> - the url to load " 
-"(file:///local/paths.xml or http://domain.com/remote/paths.xml<br>"
-"<b>timeout</b> - number of seconds to cache the file" ;
+constant module_doc  = "Provides an emit plugin for RSS files";
 
 
 mixed rss_fetch(string rssurl, int timeout)
@@ -26,8 +23,12 @@ mixed rss_fetch(string rssurl, int timeout)
 
   else rss = Protocols.HTTP.get_url_data(rssurl);
 
-  if(rss && sizeof(rss))
-    catch(r = Public.Web.RSS.parse(rss));
+  catch
+  {
+
+  if(rss)
+    r = Public.Web.RSS.parse(rss);
+  };
 
   if(r)
     cache->store(cache_pike(rssurl, r, timeout));
@@ -50,19 +51,22 @@ array emit_rss(mapping args, object request_id)
          (int)(args->timeout || 1800) }));
 
 
+  if(!r)
+    return ({});
+
   array retval = ({});
   Public.Web.RSS.Item item;
-  if(r)
-    foreach(r->items, item)
-    {
-      mapping d = ([]);
 
-      d->rsschannel = r->data->title;
-  
-      d+=copy_value(item->data);
+  foreach(r->items, item)
+  {
+    mapping d = ([]);
 
-      retval += ({d});
-    }
+    d->rsschannel = r->data->title;
+
+    d+=copy_value(item->data);
+
+    retval += ({d});
+  }
 
   return retval;
 }
