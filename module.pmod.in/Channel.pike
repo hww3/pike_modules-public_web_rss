@@ -25,7 +25,7 @@ import ".";
 				   "lastBuildDate", "language", "pubDate",
 				   "generator", "docs", "ttl", "image",
 				   "rating", "textInput", "skipHours",
-                                   "skipDays" >);
+                                   "skipDays", "webMaster" >);
     }
     else if(_version=="0.91") element_subelements += (< "item" >);
 
