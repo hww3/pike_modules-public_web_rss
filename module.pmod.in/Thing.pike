@@ -17,6 +17,8 @@ import Public.Parser.XML2;
 
   string version;
 
+  void handle_ns_element_callback(string ns, string element, Node data, object thing);
+
   final string _sprintf(int m)
   {
     if(data && data->title)
@@ -89,5 +91,7 @@ import Public.Parser.XML2;
     if(!data[ns])
      data[ns] = ([element->get_node_name(): element]);
     else data[ns][element->get_node_name()] = element;
+
+    if(handle_ns_element_callback) handle_ns_element_callback(ns, element->get_node_name(), element, this);
   }
 

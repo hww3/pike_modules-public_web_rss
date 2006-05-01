@@ -7,6 +7,9 @@ constant __version = "1.0";
 import Public.Parser.XML2;
 constant V10_NS = "http://purl.org/rss/1.0/";
 
+static mapping ns_channel_handlers = ([]);
+static mapping ns_item_handlers = ([]);
+
 //!
 .Channel parse(string xml)
 {
@@ -46,3 +49,40 @@ constant V10_NS = "http://purl.org/rss/1.0/";
   return .Channel(rss_node, version);
 
 }
+
+//!  @param handler
+//!   receives a function that gets the namespace, the element name, node and the Thing object
+void add_ns_item_handler(string namespace, string element, function handler)
+{
+  if(!ns_item_handlers[namespace])
+    ns_item_handlers[namespace] = ([]);
+  ns_item_handlers[namespace][element] = handler;
+}
+
+//! @param handler
+//!   receives a function that gets the namespace, the element name, node and the Thing object
+void add_ns_channel_handler(string namespace, string element, function handler)
+{
+  if(!ns_channel_handlers[namespace])
+    ns_channel_handlers[namespace] = ([]);
+  ns_channel_handlers[namespace][element] = handler;
+}
+
+function get_ns_channel_handler(string ns, string element)
+{
+  function f;
+
+  if(ns_channel_handlers[ns] && (f = ns_channel_handlers[ns][element]))
+    return f;
+  else return 0;
+}
+
+function get_ns_item_handler(string ns, string element)
+{
+  function f;
+
+  if(ns_item_handlers[ns] && (f = ns_item_handlers[ns][element]))
+    return f;
+  else return 0;
+}
+
