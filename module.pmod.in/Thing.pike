@@ -86,5 +86,8 @@ import Public.Parser.XML2;
 
   static void handle_ns_element(Node element, string ns, string version)
   {
+    if(!data[ns])
+     data[ns] = ([element->get_node_name(): element]);
+    else data[ns][element->get_node_name()] = element;
   }
 
